@@ -1,5 +1,5 @@
 import { getMagicClient } from "~/data/adapters/browser/magic/webClient";
-import { type PublicClient, type WalletClient, createPublicClient, createWalletClient, custom, http } from "viem";
+import { type PublicClient, type WalletClient, createPublicClient, createWalletClient, custom, http, type Hash } from "viem";
 import { etherlinkTestnet } from "viem/chains";
 import { privateKeyToAccount } from 'viem/accounts';
 import { getNetworkConfig } from "../network";
@@ -34,7 +34,7 @@ let oracleWalletClientInstance: WalletClient | undefined;
 const getOracleWalletClient = () => {
     if (oracleWalletClientInstance) return oracleWalletClientInstance;
 
-    const account = privateKeyToAccount(env.ORACLE_ACCOUNT)
+    const account = privateKeyToAccount(env.ORACLE_ACCOUNT as Hash);
 
     oracleWalletClientInstance = createWalletClient({
         account,
