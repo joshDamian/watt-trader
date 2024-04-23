@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Avoaja-Joshua-Akachi-s-workspace-go6354.eu-central-1.xata.sh/db/watt-trader",
+  "codegen": {
+    "output": "src/data/adapters/server/xata/index.ts"
+  }
+}
