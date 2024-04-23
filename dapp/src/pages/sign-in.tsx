@@ -1,6 +1,7 @@
 import SignIn from "~/components/SignIn";
 import { signInWithEmail } from "~/data/adapters/browser/auth";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -19,7 +20,13 @@ export default function SignInPage() {
           />
         </div>
       </section>
-      <section className="bg-gray-800"></section>
+      <div className="relative">
+        <Image
+          alt="Electricity illustration"
+          src="/electricity_illustration.jpg"
+          fill
+        />
+      </div>
     </div>
   );
 }
