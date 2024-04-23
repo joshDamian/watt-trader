@@ -48,7 +48,7 @@ const Meter: FC<MeterProps> = ({
   const circumference = ((2 * 22) / 7) * 120;
 
   const energyUsagePercent =
-    currentMeterBalance === 0
+    (currentMeterBalance === 0 || lastRecordedBalance === 0)
       ? 0
       : (currentMeterBalance / lastRecordedBalance) * 100;
 

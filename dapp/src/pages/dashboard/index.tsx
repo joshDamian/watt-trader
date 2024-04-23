@@ -18,10 +18,11 @@ import { userRepository } from "~/data/adapters/server/xata/repositories";
 import RegisterProductionUnit from "~/components/Dashboard/RegisterProductionUnit";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useEffect } from "react";
 
-type DashboardPageProps = Readonly<InferGetServerSidePropsType<
-  typeof getServerSideProps
->>;
+type DashboardPageProps = Readonly<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+>;
 
 export default function DashboardPage({ user }: DashboardPageProps) {
   const [lastRecordedBalance, setLastRecordedBalance] = useLocalStorage<number>(
@@ -40,6 +41,13 @@ export default function DashboardPage({ user }: DashboardPageProps) {
     "lastEnergyReport",
     0,
   );
+
+  useEffect(() => {
+    if (currMeterBalance > lastRecordedBalance) {
+      setLastRecordedBalance(currMeterBalance);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currMeterBalance]);
 
   const router = useRouter();
 
