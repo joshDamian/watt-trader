@@ -3,6 +3,7 @@ import { energyTokenAbi } from "~/resources/web3/abis/wattEnergyToken";
 import { wattTraderAbi } from "~/resources/web3/abis/wattTrader";
 import { getAccount, getTokenBalance } from "~/resources/web3/account";
 import { getContractAddress } from "~/resources/web3/contracts";
+import { getTransactionExplorerUrl } from "~/resources/web3/network";
 import { getPublicClient, getWalletClient } from "~/resources/web3/viem/clients";
 
 export const getEnergyBalance = async (userWallet: Address) => {
@@ -171,6 +172,8 @@ export const listEnergy = async (params: { amount: number, price: number }) => {
     );
 
     if (transaction.status === 'reverted') throw new Error('Transaction reverted');
+
+    return getTransactionExplorerUrl(transaction.transactionHash);
 }
 
 export const purchaseEnergy = async (params: { listingId: number, price: number }) => {
@@ -197,5 +200,7 @@ export const purchaseEnergy = async (params: { listingId: number, price: number 
     );
 
     if (transaction.status === 'reverted') throw new Error('Transaction reverted');
+
+    return getTransactionExplorerUrl(transaction.transactionHash);
 }
 

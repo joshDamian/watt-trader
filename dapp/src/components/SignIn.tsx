@@ -2,6 +2,7 @@ import React, { type FC } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInInputs, type SignInInputs } from "~/data/schemas/auth";
+import toast from "react-hot-toast";
 
 interface SignInProps {
   signIn: (email: string) => Promise<void>;
@@ -20,8 +21,12 @@ const SignIn: FC<SignInProps> = ({ signIn }) => {
   const onSubmit = async (data: SignInInputs) => {
     try {
       await signIn(data.email);
+
+      toast.success('Signed In');
     } catch (error) {
       console.log(error);
+
+      toast.error('Sign In failed');
     }
   };
 

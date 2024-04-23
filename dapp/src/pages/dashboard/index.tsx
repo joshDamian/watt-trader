@@ -19,9 +19,9 @@ import RegisterProductionUnit from "~/components/Dashboard/RegisterProductionUni
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-type DashboardPageProps = InferGetServerSidePropsType<
+type DashboardPageProps = Readonly<InferGetServerSidePropsType<
   typeof getServerSideProps
->;
+>>;
 
 export default function DashboardPage({ user }: DashboardPageProps) {
   const [lastRecordedBalance, setLastRecordedBalance] = useLocalStorage<number>(

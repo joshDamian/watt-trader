@@ -5,10 +5,11 @@ import {
   listEnergyInputs,
   type ListEnergyInputs,
 } from "~/data/schemas/energyMarket";
+import toast, { CheckmarkIcon } from "react-hot-toast";
 
 interface ListEnergyProps {
   currentEnergyBalance: number;
-  listEnergy: (params: { amount: number; price: number }) => Promise<void>;
+  listEnergy: (params: { amount: number; price: number }) => Promise<string>;
 }
 
 const ListEnergy: FC<ListEnergyProps> = ({
@@ -26,9 +27,28 @@ const ListEnergy: FC<ListEnergyProps> = ({
 
   const onSubmit = async (data: ListEnergyInputs) => {
     try {
-      await listEnergy(data);
+      const exploreTxUrl = await listEnergy(data);
+
+      toast(() => (
+        <span className="flex flex-col items-center gap-5 py-2 font-sans">
+          <span className="flex items-center gap-3">
+            <CheckmarkIcon />
+            <span>Energy listing completed!</span>
+          </span>
+          <a
+            href={exploreTxUrl}
+            target="_blank"
+            className="w-full rounded-md border border-blue-500 px-4 py-2 text-center text-blue-500"
+            rel="noopener noreferrer"
+          >
+            View tx on explorer
+          </a>
+        </span>
+      ));
     } catch (error) {
       console.log(error);
+
+      toast.error("Energy listing failed");
     }
   };
 

@@ -1,21 +1,23 @@
 import { type AppType } from "next/app";
-import { Inter } from "next/font/google";
+import { Titillium_Web } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import "~/styles/globals.css";
+import { Toaster } from "react-hot-toast";
 
-const inter = Inter({
+const titilliumWeb = Titillium_Web({
   subsets: ["latin"],
   variable: "--font-sans",
+  weight: ["400", "600", "700"],
 });
 
 const MyApp: AppType<{
   session: Session;
 }> = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     <SessionProvider session={session}>
-      <main className={`font-sans ${inter.variable}`}>
+      <Toaster />
+      <main className={`font-sans ${titilliumWeb.variable} text-[#1A1A1A]`}>
         <Component {...pageProps} />
       </main>
     </SessionProvider>

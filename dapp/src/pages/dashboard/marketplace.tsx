@@ -14,23 +14,26 @@ import type {
   InferGetServerSidePropsType,
 } from "next";
 import useSWR from "swr";
-import { useRouter } from "next/router";
 import { useLocalStorage } from "usehooks-ts";
 
-type EnergyMarketplacePageProps = InferGetServerSidePropsType<
-  typeof getServerSideProps
+type EnergyMarketplacePageProps = Readonly<
+  InferGetServerSidePropsType<typeof getServerSideProps>
 >;
 
 export default function EnergyMarketplacePage({
   user,
 }: EnergyMarketplacePageProps) {
-  const router = useRouter();
-
   const [showListEnergy, setShowListEnergy] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setLastRecordedBalance] = useLocalStorage<number>(
     "test_lastRecordedBalance",
+    0,
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [__, setCurrentMeterBalance] = useLocalStorage<number>(
+    "currentMeterBalance",
     0,
   );
 
@@ -70,11 +73,11 @@ export default function EnergyMarketplacePage({
               <ListEnergy
                 currentEnergyBalance={currentEnergyBalance}
                 listEnergy={async (params) => {
-                  await listEnergy(params);
+                  const exploreTxUrl = await listEnergy(params);
 
                   setLastRecordedBalance(currentEnergyBalance - params.amount);
 
-                  router.reload();
+                  return exploreTxUrl;
                 }}
               />
             </div>
@@ -87,12 +90,14 @@ export default function EnergyMarketplacePage({
         <EnergyListings
           getEnergyListings={getEnergyListings}
           purchaseEnergy={async (params) => {
-            console.log("called function");
-            await purchaseEnergy(params);
+            const txExploreUrl = await purchaseEnergy(params);
 
-            setLastRecordedBalance(currentEnergyBalance + params.energyAmount);
+            const updatedBalance = currentEnergyBalance + params.energyAmount;
 
-            router.reload();
+            setLastRecordedBalance(updatedBalance);
+            setCurrentMeterBalance(updatedBalance);
+
+            return txExploreUrl;
           }}
         />
       )}
